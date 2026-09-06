@@ -15,3 +15,4 @@
 # • ¿Cuáles son los días más ‘lentos’, con menos propinas?
 # • ¿Cuál es el promedio de las propinas?
 # • ¿Cuándo se vendió la orden más grande (qué día y en qué turno)?
+
