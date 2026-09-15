@@ -7,7 +7,7 @@ class Planta(Empleado):
         self.años_antiguedad = años_antiguedad
     #Empleados de planta: Reciben un bono adicional del 20% si cumplen más  de 5 años en la empresa.
     def calcular_salario(self):
-        if self.años_antiguedad >= 5:
+        if self.años_antiguedad > 5:
             return self.salario_base*1.20
         return self.salario_base
 

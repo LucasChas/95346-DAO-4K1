@@ -8,7 +8,7 @@ class Empleado(ABC):
         self.salario_base = salario_base
 
     def __str__(self):
-        return f" | Codigo de empleado: {self.codigo} | Nombre: {self.nombre} "
+        return f" Tipo de empleado: {self.tipo} | Codigo de empleado: {self.codigo} | Nombre: {self.nombre} "
     @abstractmethod
     def calcular_salario(self):
         ...
