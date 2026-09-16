@@ -8,5 +8,5 @@ class Material(ABC):
         self.autor = autor
         self.precio_base = precio_base
     @abstractmethod
-    def calcular_precio_mantenimiento(self):
+    def calcular_costo_mantenimiento(self):
         pass

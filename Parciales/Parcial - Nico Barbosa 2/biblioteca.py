@@ -4,11 +4,11 @@ from revista import Revista
 class Biblioteca():
     def __init__(self,nombre_archivo):
         self.nombre_archivo = nombre_archivo
-        self.lista_libros = []
+        self.materiales = []
         self.cargar_archivo()
 
     def cantidad_materiales(self):
-        return self.lista_libros
+        return self.materiales
 
     #1. Cargar materiales desde el archivo.
     def cargar_archivo(self):
@@ -29,12 +29,12 @@ class Biblioteca():
             else:
                 importado = campos[5]
                 material = Revista(codigo,titulo,autor,precio_base,importado)
-            self.lista_libros.append(material)
+            self.materiales.append(material)
     #2. Calcular el promedio entero de los precios base de todos.
     def calcular_promedio_precios_base(self):
         suma = 0
         cantidad = 0
-        for material in self.lista_libros:
+        for material in self.materiales:
             suma += material.precio_base
             cantidad +=1
         return suma//cantidad
@@ -43,14 +43,14 @@ class Biblioteca():
     def obtener_material_mayor_costo_mantenimiento(self):
         primero = True
         objeto = None
-        for material in self.lista_libros:
+        for material in self.materiales:
             if primero:
-                mayor = material.calcular_precio_mantenimiento()
+                mayor = material.calcular_costo_mantenimiento()
                 primero = False
                 objeto = material
             else:
-                if material.calcular_precio_mantenimiento() > mayor:
-                    mayor = material.calcular_precio_mantenimiento()
+                if material.calcular_costo_mantenimiento() > mayor:
+                    mayor = material.calcular_costo_mantenimiento()
                     objeto = material
         return objeto
 
@@ -58,14 +58,14 @@ class Biblioteca():
 
     def calcular_suma_costo_mantenimiento(self):
         suma = 0
-        for material in self.lista_libros:
-            suma += material.calcular_precio_mantenimiento()
+        for material in self.materiales:
+            suma += material.calcular_costo_mantenimiento()
         return suma
 
     #5. Contar cuántos libros físicos se prestaron por más de 30 días.
     def contar_libros_mas_30_dias(self):
         cantidad = 0
-        for material in self.lista_libros:
+        for material in self.materiales:
             if material.tipo == 1:
                 if material.dias_prestados > 30:
                     cantidad += 1
@@ -74,9 +74,9 @@ class Biblioteca():
     #6. Contar cuántas revistas son importadas.
     def contar_revistas_importadas(self):
         cantidad = 0
-        for material in self.lista_libros:
+        for material in self.materiales:
             if material.tipo == 3:
-                if material.importacion == "importada":
+                if material.origen == "importada":
                     cantidad += 1
         return cantidad
 
@@ -88,7 +88,7 @@ class Biblioteca():
             "Revista": 0 
         }
 
-        for material in self.lista_libros:
+        for material in self.materiales:
             if material.tipo == 1:
                 conteo["Libro"] += 1
             elif material.tipo == 2:
