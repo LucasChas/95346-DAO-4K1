@@ -32,7 +32,7 @@ def campeonato():
 
 def test_constructor_campeonato(campeonato):
     assert campeonato is not None
-    assert len(campeonato.pilotos) == 9
+    assert len(campeonato.pilotos) == 11
 
 def test_constructor_archivo_inexistente():
     with pytest.raises(FileNotFoundError):
@@ -40,18 +40,18 @@ def test_constructor_archivo_inexistente():
 
 def test_orden_de_carga(campeonato):
     numeros = [piloto.numero for piloto in campeonato.pilotos]
-    assert numeros == [7, 12, 23, 31, 40, 45, 50, 55, 62]
+    assert numeros == [1, 4, 16, 81, 55, 63, 44, 38, 30, 43, 7]
 
 def test_tipos_numericos_cargados(campeonato):
     primero = campeonato.pilotos[0]
-    assert primero.numero == 7
+    assert primero.numero == 1
     assert isinstance(primero.numero, int)
-    assert primero.sueldo_base == 300000
-    assert primero.puntos == 410
-    assert primero.victorias == 8
+    assert primero.sueldo_base == 550000
+    assert primero.puntos == 437
+    assert primero.victorias == 9
     assert isinstance(primero.victorias, int)
-    suplente = campeonato.pilotos[4]
-    assert suplente.carreras == 4
+    suplente = campeonato.pilotos[7]
+    assert suplente.carreras == 3
     assert isinstance(suplente.carreras, int)
 
 
@@ -95,7 +95,7 @@ def test_puntos_negativos_novato():
         Novato(3, "Error", "Ferrari", 100000, -10, "no")
 
 def test_cero_puntos_es_valido():
-    assert Suplente(45, "Franco Benitez", "Red Bull", 80000, 0, 0).puntos == 0
+    assert Novato(7, "Jack Doohan", "Alpine", 40000, 0, "no").puntos == 0
 
 
 # ---------------------------------------------------------------------------
@@ -103,29 +103,29 @@ def test_cero_puntos_es_valido():
 # ---------------------------------------------------------------------------
 
 def test_atributos_titular():
-    titular = Titular(7, "Tomas Almada", "Red Bull", 300000, 410, 8)
+    titular = Titular(1, "Max Verstappen", "Red Bull", 550000, 437, 9)
     assert titular.tipo == 1
-    assert titular.numero == 7
-    assert titular.nombre == "Tomas Almada"
+    assert titular.numero == 1
+    assert titular.nombre == "Max Verstappen"
     assert titular.escuderia == "Red Bull"
-    assert titular.sueldo_base == 300000
-    assert titular.puntos == 410
-    assert titular.victorias == 8
+    assert titular.sueldo_base == 550000
+    assert titular.puntos == 437
+    assert titular.victorias == 9
 
 def test_atributos_suplente():
-    suplente = Suplente(40, "Santiago Lucero", "Ferrari", 90000, 6, 4)
+    suplente = Suplente(38, "Oliver Bearman", "Ferrari", 50000, 7, 3)
     assert suplente.tipo == 2
-    assert suplente.carreras == 4
+    assert suplente.carreras == 3
 
 def test_atributos_novato():
-    novato = Novato(50, "Lucia Ferreyra", "Williams", 120000, 48, "si")
+    novato = Novato(43, "Franco Colapinto", "Williams", 70000, 5, "si")
     assert novato.tipo == 3
     assert novato.premio == "si"
 
 def test_str_incluye_nombre():
-    assert "Tomas Almada" in str(Titular(7, "Tomas Almada", "Red Bull", 300000, 410, 8))
-    assert "Santiago Lucero" in str(Suplente(40, "Santiago Lucero", "Ferrari", 90000, 6, 4))
-    assert "Lucia Ferreyra" in str(Novato(50, "Lucia Ferreyra", "Williams", 120000, 48, "si"))
+    assert "Max Verstappen" in str(Titular(1, "Max Verstappen", "Red Bull", 550000, 437, 9))
+    assert "Oliver Bearman" in str(Suplente(38, "Oliver Bearman", "Ferrari", 50000, 7, 3))
+    assert "Franco Colapinto" in str(Novato(43, "Franco Colapinto", "Williams", 70000, 5, "si"))
 
 
 # ---------------------------------------------------------------------------
@@ -133,34 +133,34 @@ def test_str_incluye_nombre():
 # ---------------------------------------------------------------------------
 
 def test_titular_con_bonus():
-    # (300000 + 1000 * 410 + 50000 * 8) = 1110000 -> +10%
-    assert Titular(7, "Tomas Almada", "Red Bull", 300000, 410, 8).calcular_pago() == pytest.approx(1221000)
+    # (550000 + 1000 * 437 + 50000 * 9) = 1437000 -> +10%
+    assert Titular(1, "Max Verstappen", "Red Bull", 550000, 437, 9).calcular_pago() == pytest.approx(1580700)
 
 def test_titular_sin_bonus():
-    # 250000 + 1000 * 320 + 50000 * 3
-    assert Titular(12, "Bruno Salvatierra", "Ferrari", 250000, 320, 3).calcular_pago() == pytest.approx(720000)
+    # 300000 + 1000 * 374 + 50000 * 4
+    assert Titular(4, "Lando Norris", "McLaren", 300000, 374, 4).calcular_pago() == pytest.approx(874000)
 
 def test_titular_5_victorias_tiene_bonus():
-    # (200000 + 350000 + 250000) = 800000 -> +10%
-    assert Titular(23, "Ignacio Paredes", "McLaren", 200000, 350, 5).calcular_pago() == pytest.approx(880000)
+    # (100000 + 0 + 250000) = 350000 -> +10%
+    assert Titular(99, "Borde", "Alpine", 100000, 0, 5).calcular_pago() == pytest.approx(385000)
 
 def test_titular_4_victorias_no_tiene_bonus():
     assert Titular(99, "Borde", "Alpine", 100000, 0, 4).calcular_pago() == pytest.approx(300000)
 
 def test_suplente_con_carreras():
-    # 90000 + 20000 * 4 (los puntos no suman)
-    assert Suplente(40, "Santiago Lucero", "Ferrari", 90000, 6, 4).calcular_pago() == pytest.approx(170000)
+    # 60000 + 20000 * 6 (los puntos no suman)
+    assert Suplente(30, "Liam Lawson", "RB", 60000, 4, 6).calcular_pago() == pytest.approx(180000)
 
 def test_suplente_sin_carreras():
-    assert Suplente(45, "Franco Benitez", "Red Bull", 80000, 0, 0).calcular_pago() == pytest.approx(80000)
+    assert Suplente(99, "Sin carreras", "Haas", 50000, 0, 0).calcular_pago() == pytest.approx(50000)
 
 def test_novato_premiado():
-    # (120000 + 500 * 48) = 144000 -> +25%
-    assert Novato(50, "Lucia Ferreyra", "Williams", 120000, 48, "si").calcular_pago() == pytest.approx(180000)
+    # (70000 + 500 * 5) = 72500 -> +25%
+    assert Novato(43, "Franco Colapinto", "Williams", 70000, 5, "si").calcular_pago() == pytest.approx(90625)
 
 def test_novato_no_premiado():
-    # 110000 + 500 * 12
-    assert Novato(55, "Emiliano Rojas", "Williams", 110000, 12, "no").calcular_pago() == pytest.approx(116000)
+    # 40000 + 500 * 0
+    assert Novato(7, "Jack Doohan", "Alpine", 40000, 0, "no").calcular_pago() == pytest.approx(40000)
 
 
 # ---------------------------------------------------------------------------
@@ -168,66 +168,70 @@ def test_novato_no_premiado():
 # ---------------------------------------------------------------------------
 
 def test_calcular_promedio_puntos(campeonato):
-    # 1366 puntos / 9 pilotos = 151.77 -> 151
+    # 2233 puntos / 11 pilotos = 203
     promedio = campeonato.calcular_promedio_puntos()
-    assert promedio == 151
+    assert promedio == 203
     assert isinstance(promedio, int)
 
 def test_obtener_piloto_mejor_pago(campeonato):
     piloto = campeonato.obtener_piloto_mejor_pago()
-    assert piloto.numero == 7
-    assert piloto.nombre == "Tomas Almada"
-    assert piloto.calcular_pago() == pytest.approx(1221000)
+    assert piloto.numero == 1
+    assert piloto.nombre == "Max Verstappen"
+    assert piloto.calcular_pago() == pytest.approx(1580700)
 
 def test_calcular_total_pagos(campeonato):
-    assert campeonato.calcular_total_pagos() == pytest.approx(3880750)
+    assert campeonato.calcular_total_pagos() == pytest.approx(6411325)
 
 def test_contar_titulares_con_bonus(campeonato):
-    assert campeonato.contar_titulares_con_bonus() == 2
+    assert campeonato.contar_titulares_con_bonus() == 1
 
 def test_contar_novatos_premiados(campeonato):
-    assert campeonato.contar_novatos_premiados() == 2
+    assert campeonato.contar_novatos_premiados() == 1
 
 def test_cantidad_por_tipo(campeonato):
-    assert campeonato.cantidad_por_tipo() == {"Titular": 4, "Suplente": 2, "Novato": 3}
+    assert campeonato.cantidad_por_tipo() == {"Titular": 7, "Suplente": 2, "Novato": 2}
 
 def test_puntos_por_escuderia(campeonato):
     assert campeonato.puntos_por_escuderia() == {
-        "Red Bull": 410,
-        "Ferrari": 326,
-        "McLaren": 540,
-        "Williams": 60,
-        "Alpine": 30,
+        "Red Bull": 437,
+        "McLaren": 666,
+        "Ferrari": 653,
+        "Mercedes": 468,
+        "RB": 4,
+        "Williams": 5,
+        "Alpine": 0,
     }
 
 def test_escuderia_campeona(campeonato):
     assert campeonato.escuderia_campeona() == "McLaren"
 
 def test_buscar_piloto_existente(campeonato):
-    piloto = campeonato.buscar_piloto(62)
+    piloto = campeonato.buscar_piloto(43)
     assert piloto is not None
-    assert piloto.nombre == "Joaquin Vera"
+    assert piloto.nombre == "Franco Colapinto"
     assert isinstance(piloto, Novato)
 
 def test_buscar_piloto_inexistente(campeonato):
     assert campeonato.buscar_piloto(99) is None
 
 def test_ranking_top_3(campeonato):
-    assert campeonato.ranking(3) == ["Tomas Almada", "Ignacio Paredes", "Bruno Salvatierra"]
+    assert campeonato.ranking(3) == ["Max Verstappen", "Lando Norris", "Charles Leclerc"]
 
 def test_ranking_todos(campeonato):
     assert campeonato.ranking(20) == [
-        "Tomas Almada",
-        "Ignacio Paredes",
-        "Bruno Salvatierra",
-        "Mateo Quiroga",
-        "Lucia Ferreyra",
-        "Joaquin Vera",
-        "Emiliano Rojas",
-        "Santiago Lucero",
-        "Franco Benitez",
+        "Max Verstappen",
+        "Lando Norris",
+        "Charles Leclerc",
+        "Oscar Piastri",
+        "Carlos Sainz",
+        "George Russell",
+        "Lewis Hamilton",
+        "Oliver Bearman",
+        "Franco Colapinto",
+        "Liam Lawson",
+        "Jack Doohan",
     ]
 
 def test_ranking_no_modifica_orden_original(campeonato):
     campeonato.ranking(3)
-    assert [piloto.numero for piloto in campeonato.pilotos] == [7, 12, 23, 31, 40, 45, 50, 55, 62]
+    assert [piloto.numero for piloto in campeonato.pilotos] == [1, 4, 16, 81, 55, 63, 44, 38, 30, 43, 7]

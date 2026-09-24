@@ -24,6 +24,8 @@ Hay tres tipos de pilotos:
 
 El archivo **no** tiene fila de encabezado.
 
+Los pilotos, números de auto, escuderías, puntos, victorias y carreras disputadas corresponden a la temporada 2024 de F1 (simplificados: Bearman figura solo en Ferrari aunque también corrió para Haas). Los sueldos y el premio a novato del año son **ficticios**.
+
 ## Modelo de clases
 
 Se deben respetar los siguientes nombres de módulos, clases, constructores y atributos (los tests dependen de ellos):
