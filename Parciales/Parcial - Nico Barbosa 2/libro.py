@@ -6,7 +6,7 @@ class Libro(Material):
 
         self.dias_prestados = dias_prestados
 
-    def calcular_precio_mantenimiento(self):
+    def calcular_costo_mantenimiento(self):
         # $100 por cada bloque completo de 30 días prestados
         return (self.dias_prestados // 30) * 100
 

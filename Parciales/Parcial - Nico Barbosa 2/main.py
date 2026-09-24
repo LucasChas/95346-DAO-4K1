@@ -11,7 +11,7 @@ def main():
     print(f"Promedio entero de los precios base: {biblioteca.calcular_promedio_precios_base()}")
     print("-"*100)
     mayor_costo = biblioteca.obtener_material_mayor_costo_mantenimiento()
-    print(f"Material con el mayor costo de mantenimiento: {mayor_costo.titulo} con un costo de: ${mayor_costo.calcular_precio_mantenimiento()}")
+    print(f"Material con el mayor costo de mantenimiento: {mayor_costo.titulo} con un costo de: ${mayor_costo.calcular_costo_mantenimiento()}")
 
     print("-"*100)
 
