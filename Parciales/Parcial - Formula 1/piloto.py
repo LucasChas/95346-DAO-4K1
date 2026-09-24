@@ -11,7 +11,9 @@ class Piloto(ABC):
        self.sueldo_base = sueldo_base
        self.puntos = puntos
 
-
+    def __str__(self):
+        return f" | Tipo: {'Titular' if self.tipo == 1 else ('Suplente' if self.tipo == 2 else 'Novato')} | Número: {self.numero} | Nombre: {self.nombre} |Escuderia: {self.escuderia} | Cantidad de puntos {self.puntos} | Sueldo: ${self.calcular_pago()} |"
+    
     @abstractmethod
     def calcular_pago(self):
         pass
